@@ -39,7 +39,11 @@ public:
         out.close();
     }
     virtual void computerReactionField(Curve* _curve) = 0;
+    virtual void computerPolarizationTensor() = 0;
+    virtual void computerMultipoleTensor() = 0;
 };
+
+
 
 class BEMReactionFieldMethod : public ReactionFieldMethod
 {
@@ -54,13 +58,24 @@ public:
     {
 
     }
+
+    void computerPolarization()
+    {
+
+    }
+    void computerMultipoleTensor()
+    {
+        tuco->setInteractionsMatrix();
+        tuco->computer(field);
+        std::cout << "p = " << *tunableCluster->getMacroParticle(1)->getDipole()->getValue() << std::endl;
+        std::cout << std::endl;
+        std::cout << "D = " << *tunableCluster->getMacroParticle(1)->getQuadrupole()->getValue() << std::endl;
+    }
     void computerReactionField(Curve* _curve)
     {
         tuco->setInteractionsMatrix();
         tuco->computer(field);
         tunableCluster->record("");
-        //std::cout << tunableCluster->getMacroParticle(1)->getDipole()->getValue() << std::endl;
-        //std::cout << tunableCluster->getMacroParticle(1)->getQuadrupole()->getValue() << std::endl;
         //std::cout << tunableCluster->getMacroParticle(1)->getSelfEnergy().getValue() << std::endl;
         //std::cin.get();
         for (auto&& iPoint : *_curve->getPontList()->getPoints())
@@ -72,7 +87,6 @@ public:
             }
         }
     }
-
 };
 
 }

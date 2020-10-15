@@ -73,21 +73,18 @@ ph::Dipole* MacroParticle::getDipole()
         return dipole_.get();
     }
     if (existPhysicalMesh()) {
-        Vector3d p(0.0, 0.0, 0.0);
-        /*
+        Vector3d p(0.0, 0.0, 0.0);        
         for (auto &iElement : *getBoundaryElements())
         {
             p += iElement->getBarycenter() * iElement->getChargeValue();
-        }
-        */
+        }        
         if (existSimpleCore()) {
             for (auto &iElement : *getCoreBoundaryElements())
             {
                 p += iElement->getBarycenter() * iElement->getChargeValue();
             }
         }
-        std::cout << p.norm() << std::endl;
-        std::cin.get();
+        dipole_.reset(new ph::Dipole(1, p, getPosition()));
         return new ph::Dipole(1, p, getPosition());
     }
 }

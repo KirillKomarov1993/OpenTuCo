@@ -92,8 +92,6 @@ struct MacroParticle : public cs::Particle,
                 }
             }
             quadrupole_.reset(new ph::Quadrupole(1, Q, getPosition()));
-            std::cout << Q << std::endl;
-            //std::cin.get();
             return quadrupole_.get();
         }
     }

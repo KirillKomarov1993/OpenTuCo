@@ -95,10 +95,6 @@ void computerUnitAnisotropicParticle()
     colloid1->setPhysicalMesh(new ElectricMesh);
 
 
-    //std::cin.get();
-
-
-
 //**Задаем коллоидный кластер:
     std::cout << "                 / Create colloidal cluster" << std::endl;
     TunableCluster* tunableCluster = new TunableCluster(environment);
