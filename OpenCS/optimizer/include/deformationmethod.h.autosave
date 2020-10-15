@@ -1,0 +1,131 @@
+#ifndef DEFORMATIONMETHOD_H
+#define DEFORMATIONMETHOD_H
+
+#include "crystal.h"
+
+namespace cs {
+
+//**Базовый класс:
+class OptimizationAlgorithm
+{
+    
+public:
+    OptimizationAlgorithm()
+    {
+        
+    }
+    virtual ~OptimizationAlgorithm()
+    {
+        
+    }
+    virtual double getFunctionalValue() = 0;
+    virtual VectorXd getArgumentVector() = 0;
+    virtual VectorXd getGradientVector() = 0;
+};
+
+/*
+virtual double getFunctionalValue()
+{
+    return crystal->getUnitCellEnergy().getValue();
+}
+virtual VectorXd getArgumentVector()
+{
+    VectorXd vector(crystal->getMainUnitCell()->getParticleCount());
+    for (auto& iNode : *crystal->getMainUnitCell()->getNodes())
+    {
+        for (unsigned long i = 0; i < 2; i++) {
+            //vector(static_cast<Index>(i + 2 * (iNode->getNumber() - 1))) = crystal->getElasticModulus()->getModule(iNode->getNumber())(static_cast<Index>(i));
+        }
+    }
+    return vector;
+}
+virtual VectorXd getGradientVector()
+{
+    VectorXd vector(crystal->getMainUnitCell()->getParticleCount());
+    for (auto& iNode : *crystal->getMainUnitCell()->getNodes())
+    {
+        for (unsigned long i = 0; i < 2; i++) {
+            vector(static_cast<Index>(i + 2 * (iNode->getNumber() - 1))) = crystal->getElasticModulus()->getModule(iNode->getNumber())(static_cast<Index>(i));
+        }
+    }
+    return vector;
+}
+*/
+
+//**Унаследованный класс:
+class ExternalOptimizer : public OptimizationAlgorithm
+{
+public:
+    ExternalOptimizer()
+    {
+        
+    }    
+};
+
+//**Унаследованный класс:
+class MethodGradientDescent : OptimizationAlgorithm
+{
+public:
+    MethodGradientDescent()
+    {
+        
+    }
+    void findLocalMinimum()
+    {
+        
+    }    
+};
+
+
+class TestOptimizer
+{
+public:
+    double getRosenbrockFunction(Vector3d r)
+    {
+        return pow(1.0 - r(1), 2) + 100.0 * pow(r(2) - r(1) * r(1), 2);
+    }
+    Vector3d getRosenbrockGradient(Vector3d r)
+    {
+        return Vector3d(-2.0 * (1.0 - r(0)) - 400.0 * r(0) * (r(1) - r(0) * r(0)),
+                                              200.0        * (r(1) - r(0) * r(0)) );
+    }    
+};
+
+
+
+//
+//      здесь, расчет модулей упругости каждого "свободного" узла ячейки
+//
+
+// Interface:
+class DeformationMethod
+{
+protected:
+    Crystal* crystal;
+public:
+    DeformationMethod(Crystal* crystal) :
+        crystal(crystal)
+    {
+    }
+};
+
+// Realization1:
+class InternalDeformationMethod : public DeformationMethod
+{
+    double step_;
+    ph::Energy energy_;
+    std::vector<Vector3d> variatons_;
+public:
+    InternalDeformationMethod(Crystal* crystal, double _step);
+    virtual ~InternalDeformationMethod();
+    void computerElasticModules();
+    virtual void computerCellEnergy() = 0;
+protected:
+    ph::Energy* energy1;
+    ph::Energy* energy2;
+};
+
+}
+
+
+#endif // DEFORMATIONMETHOD_H
