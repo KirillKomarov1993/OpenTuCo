@@ -58,8 +58,7 @@ public:
     {
 
     }
-
-    void computerPolarization()
+    void computerPolarizationTensor()
     {
 
     }

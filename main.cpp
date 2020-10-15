@@ -113,11 +113,13 @@ void computerUnitAnisotropicParticle()
     ClusterElementMethod* bem = new ClusterElementMethod("sphere", tunableCluster, shellEquation, coreEquation);
 */
 //**Производим расчет поля:
+
     BEMReactionFieldMethod* rfm = new BEMReactionFieldMethod(tunableCluster, bem, field);
     Line* line = new Line(new Point(1, Vector3d(-5.0, 0.0, 0.0)), new Point(1, Vector3d(5.0, 0.0, 0.0)));
     line->setPointList(1000);
-    rfm->computerReactionField(line);
-    rfm->record("", "pot_field-d_mesh-ICS2-gQc-mQq_surf-gQc-mQq");
+    rfm->computerMultipoleTensor();
+    //rfm->computerReactionField(line);
+    //rfm->record("", "pot_field-d_mesh-ICS2-gQc-mQq_surf-gQc-mQq");
 
     std::cout << "END!" << std::endl;
 }
